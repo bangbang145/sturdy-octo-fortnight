@@ -1,0 +1,102 @@
+import requests
+import json
+import pandas
+import time
+import schedule
+
+headers = {
+    "Content-Type": "application/json; charset=UTF-8",
+    "Referer": "https://xingyun.map.qq.com/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36",
+    "Host": "xingyun.map.qq.com",
+    "Connection": "keep-alive",
+    "Content-Length": "20",
+    "Origin": "https://xingyun.map.qq.com",
+    "DNT": "1",
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "zh,en-US;q=0.9,en;q=0.8,zh-TW;q=0.7,zh-CN;q=0.6",
+    "Cookie": "tvfe_boss_uuid=5aa3652141873c25; pgv_pvid=2194534588; pgv_pvi=6471511040; RK=EIDYTw5wTa; ptcz=73f9df8c1c4a28cec0a2a9da33fcac4f5dc0cc420955cd1b4de3c35dd975f3cd; o_cookie=414769356; pac_uid=1_414769356; luin=o0414769356; qb_qua=; qb_guid=811327c8ccc34b2d864e700be4a3b666; Q-H5-GUID=811327c8ccc34b2d864e700be4a3b666; NetType=; pgv_info=ssid=s6144441676; pgv_si=s5719949312; lskey=00010000159f99cc86e485506a435afb1a2439e83db9b94e7bc433f214eed8daa51ea9feffee9583766f3780; vfwebqq=24efe8c8ce64625631bea8827ef4f107d55fd403802898ac88dd333e13abe2248050efdff3bef0f8; rv2=80E58C619F386759544813436E1CC2F25F8B66D6F7683403DF; property20=70AE33B407B149C3CCE32F2353CAE1514DC7DCF539CA043639075A3B6F27C6CE16E21760AA1EC189; _qpsvr_localtk=0.5724684118785486; ptisp=ctc; mpuv=00bbe87b-aa15-44e1-f962-b52f418a4c10; uin=o0414769356; skey=@uQHMgNVs0",
+    }
+
+
+def job1():
+    url = "https://xingyun.map.qq.com/api/getXingyunPoints"
+    pyload = {"count": 4, "rank": 0}
+    response = requests.post(url, data=json.dumps(pyload), headers=headers).text
+    start = response[38:]
+    end = start[:-2]
+    end1= end.replace(","," " )
+    end2=end1.split()
+    step =3
+    b = [end2 [i:i+step] for i in range(0,len(end2),step)]
+    c = pandas.DataFrame(b)
+    localtime = time.strftime("%Y-%m-%d-%H-%M")
+
+    c.to_csv("%s-1.csv"% localtime,index=False, header=False)
+
+    print("1-OK")
+
+def job2():
+
+
+    url = "https://xingyun.map.qq.com/api/getXingyunPoints"
+    pyload = {"count": 4, "rank": 1}
+    response = requests.post(url, data=json.dumps(pyload), headers=headers).text
+
+    start = response[38:]
+    end = start[:-2]
+    end1= end.replace(","," " )
+    end2=end1.split()
+    step =3
+    b = [end2 [i:i+step] for i in range(0,len(end2),step)]
+    c = pandas.DataFrame(b)
+    localtime = time.strftime("%Y-%m-%d-%H-%M")
+    c.to_csv("%s-2.csv"% localtime,index=False, header=False)
+
+    print("2-OK")
+
+def job3():
+
+
+    url = "https://xingyun.map.qq.com/api/getXingyunPoints"
+    pyload = {"count": 4, "rank": 2}
+    response = requests.post(url, data=json.dumps(pyload), headers=headers).text
+
+    start = response[38:]
+    end = start[:-2]
+    end1= end.replace(","," " )
+    end2=end1.split()
+    step =3
+    b = [end2 [i:i+step] for i in range(0,len(end2),step)]
+    c = pandas.DataFrame(b)
+    localtime = time.strftime("%Y-%m-%d-%H-%M")
+    c.to_csv("%s-3.csv"% localtime,index=False, header=False)
+
+    print("3-OK")
+def job4():
+
+
+    url = "https://xingyun.map.qq.com/api/getXingyunPoints"
+    pyload = {"count": 4, "rank": 3}
+    response = requests.post(url, data=json.dumps(pyload), headers=headers).text
+
+    start = response[38:]
+    end = start[:-2]
+    end1= end.replace(","," " )
+    end2=end1.split()
+    step =3
+    b = [end2 [i:i+step] for i in range(0,len(end2),step)]
+    c = pandas.DataFrame(b)
+    localtime = time.strftime("%Y-%m-%d-%H-%M")
+    c.to_csv("%s-4.csv"% localtime,index=False, header=False)
+
+    print("4-OK")
+
+schedule.every(5).minutes.do(job1)
+schedule.every(5).minutes.do(job2)
+schedule.every(5).minutes.do(job3)
+schedule.every(5).minutes.do(job4)
+while True:
+ schedule.run_pending()
+ time.sleep(1)
